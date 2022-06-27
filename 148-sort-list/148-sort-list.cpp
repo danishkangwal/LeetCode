@@ -10,22 +10,46 @@
  */
 class Solution {
 public:
-    #define pb push_back
     ListNode* sortList(ListNode* head) {
-        if(head==NULL)return NULL;
-        vector<int> v;
-        ListNode *temp = head;
-        while(temp!=NULL){
-            v.pb(temp->val);
-            temp = temp->next;
+        if (!head || !head->next)
+            return head;
+        ListNode* mid = getMid(head);
+        ListNode* left = sortList(head);
+        ListNode* right = sortList(mid);
+        return merge(left, right);
+    }
+    ListNode* getMid(ListNode *head){
+        ListNode *slow = head,*fast = head;
+        while(fast->next && fast->next->next){
+            slow = slow->next;
+            fast = fast->next->next;
         }
-        sort(v.begin(),v.end());
-        int index = 0;
-        temp = head;
-        for(auto i:v){
-            temp->val = v[index++];
-            temp = temp->next;
+        ListNode *mid = slow->next;
+        slow->next = NULL;
+        return mid;
+    }
+    ListNode* merge(ListNode *list1,ListNode *list2){
+        if(!list1)
+            return list2;
+        if(!list2)
+            return list2;
+        ListNode dummy;
+        ListNode* ptr = &dummy;
+        while (list1 && list2) {
+            if (list1->val < list2->val) {
+                ptr->next = list1;
+                list1 = list1->next;
+            } else {
+                ptr->next = list2;
+                list2 = list2->next;
+            }
+            ptr = ptr->next;
         }
-        return head;
+        if(list1) 
+            ptr->next = list1;
+        else 
+            ptr->next = list2;
+
+        return dummy.next;
     }
 };
