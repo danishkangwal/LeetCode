@@ -1,13 +1,16 @@
 class Solution {
 public:
+    int dp[46];
+    int helper(int n){
+        if(n < 2)
+            return 1;
+        if(dp[n] != -1)
+            return dp[n];
+        return dp[n] = helper(n - 1) + helper(n-2);
+    }
+    
     int climbStairs(int n) {
-        int prev = 1;
-        int prev2 = 0;
-        for(int i = 2 ; i <= n + 1 ; i++){
-            int curr = prev + prev2;
-            prev2 = prev;
-            prev = curr;
-        }
-        return prev; 
+        memset(dp, -1, sizeof(dp));
+        return helper(n);
     }
 };
