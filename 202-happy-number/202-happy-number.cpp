@@ -1,15 +1,14 @@
 class Solution {
 public:
     bool isHappy(int n) {
-        set<int> visited;
-        while(visited.find(n)==visited.end()){
-            visited.insert(n);
-            n = sumOfSquares(n);
-            
-            if(n==1)
-                return true;
+        int slow = n;
+        int fast = sumOfSquares(n);
+        
+        while(fast!=1 && slow != fast){
+            slow = sumOfSquares(slow);
+            fast = sumOfSquares(sumOfSquares(fast));
         }
-        return false;
+        return fast==1;
     }
     int sumOfSquares(int n){
         int ans = 0;
