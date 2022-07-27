@@ -11,25 +11,29 @@
  */
 class Solution {
 public:
-    int preorderIndex;
-    map<int,int> inorderIndexMap;
+    //rootIdx is the root of the Binary Tree
+    int rootIdx = 0;
+    unordered_map<int,int> inorderIndexMap;
     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-        preorderIndex = 0;
+        //entering inorder value-index pair in map
         for(int i = 0;i < inorder.size();i++){
             inorderIndexMap[inorder[i]] = i;
         }
         
-        return helper(preorder,0,inorder.size() - 1);
+        return helper(preorder,0,inorder.size()-1);
     }
-private: 
-        TreeNode* helper(vector<int> &preorder,int left,int right){
-        if(left > right) 
+    TreeNode* helper(vector<int> &preorder,int left,int right){
+        if(left > right)
             return NULL;
-        int rootData = preorder[preorderIndex++];
+        int rootData = preorder[rootIdx];
+        int pivot = inorderIndexMap[rootData];
+        rootIdx++;
         TreeNode *root = new TreeNode(rootData);
         
-        root->left = helper(preorder,left,inorderIndexMap[rootData] - 1);
-        root->right = helper(preorder,inorderIndexMap[rootData] + 1,right);
+        //calling recursive function on both sides
+        root->left = helper(preorder,left,pivot-1);
+        root->right = helper(preorder,pivot+1,right);
+        
         return root;
     }
 };
