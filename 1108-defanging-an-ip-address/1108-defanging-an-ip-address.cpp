@@ -1,9 +1,13 @@
 class Solution {
-    static regex r;
 public:
-    static string defangIPaddr(const string& address)
-    {
-        return regex_replace(address, r, "[.]");
+    string defangIPaddr(string address) {
+        string res;
+        
+        for(auto &i:address){
+            if(i=='.')res+="[.]";
+            else res+=i;
+        }
+        
+        return res;
     }
 };
-regex Solution::r = regex("[.]");
