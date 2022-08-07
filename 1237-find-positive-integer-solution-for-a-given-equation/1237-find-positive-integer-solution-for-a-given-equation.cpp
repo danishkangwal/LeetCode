@@ -19,6 +19,8 @@ public:
             for(int j = 1;j <= 1000;j++){
                 if(customfunction.f(i,j)==z)
                     ans.push_back({i,j});
+                else if(customfunction.f(i,j)>z)
+                    break;
             }
         }
         
