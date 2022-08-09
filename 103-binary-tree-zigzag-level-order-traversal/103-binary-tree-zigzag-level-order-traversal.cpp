@@ -14,36 +14,30 @@ public:
     vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
         if(!root)
             return {};
+        queue<TreeNode*> rem;
+        rem.push(root);
         vector<vector<int>> ans;
-        vector<int> curr;
-        stack<TreeNode *> s1;
-        stack<TreeNode *> s2;
-        s1.push(root);
-        while(s1.size() || s2.size()){
-            if(s1.size()){
-                while(s1.size()){
-                    TreeNode *top = s1.top();
-                    s1.pop();
-                    curr.push_back(top->val);
-                    if(top->left)s2.push(top->left);
-                    if(top->right)s2.push(top->right);
+        int level = 0; //0 for odd levels and 1 for even levels
+        
+        while(rem.size()){
+            int n = rem.size();
+            vector<int> curr(n);
+            for(int i = 0;i < n;i++){
+                TreeNode *front = rem.front();
+                rem.pop();
+                if(level){
+                    curr[n-i-1] = front->val;
+                }else{
+                    curr[i] = front->val;
                 }
-                ans.push_back(curr);
-                curr.clear();
+                if(front->left)rem.push(front->left);
+                if(front->right)rem.push(front->right);
             }
-            if(s2.size()){
-                while(s2.size()){
-                    TreeNode *top = s2.top();
-                    s2.pop();
-                    curr.push_back(top->val);
-                    if(top->right)s1.push(top->right);
-                    if(top->left)s1.push(top->left);
-                }
-                ans.push_back(curr);
-                curr.clear();
-            }
+            ans.push_back(curr);
+            level = !level;
         }
         
         return ans;
+        
     }
 };
