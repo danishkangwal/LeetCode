@@ -11,18 +11,20 @@
  */
 class Solution {
 public:
+    using iter = vector<int>::const_iterator;
     TreeNode* sortedArrayToBST(vector<int>& nums) {
-        return helper(nums,0,nums.size()-1);
+        return helper(nums.begin(),nums.end());
     }
-    TreeNode* helper(vector<int> &nums,int left,int right){
-        if(left<=right){
-            int mid = left + (right-left)/2;
-            TreeNode *root = new TreeNode(nums[mid]);
-
-            root->left = helper(nums,left,mid-1);
-            root->right = helper(nums,mid+1,right);
-            return root;
-        }
-        return NULL;
+private:
+    TreeNode* helper(iter left, iter right){
+        if(left>=right)
+            return nullptr;
+        iter mid = left + (right-left)/2;
+        TreeNode *root = new TreeNode(*mid);
+        
+        root->left = helper(left,mid);
+        root->right = helper(mid+1,right);
+        
+        return root;
     }
 };
