@@ -1,8 +1,18 @@
 class Solution {
 public:
     bool canConstruct(string ransomNote, string magazine) {
-        sort(ransomNote.begin(), ransomNote.end());
-        sort(magazine.begin(), magazine.end());
-        return includes(magazine.begin(), magazine.end(), ransomNote.begin(), ransomNote.end());
+        if(ransomNote.size()>magazine.size())
+            return false;
+        int freq[26];
+        memset(freq,0,sizeof(freq));
+        for(auto &ch:magazine){
+            freq[ch-'a']++;   
+        }
+        for(auto &ch:ransomNote){
+            if(freq[ch-'a']==0)
+                return false;
+            freq[ch-'a']--;
+        }
+        return true;
     }
 };
