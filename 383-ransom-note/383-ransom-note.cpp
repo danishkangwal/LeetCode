@@ -1,16 +1,8 @@
 class Solution {
 public:
     bool canConstruct(string ransomNote, string magazine) {
-        map<char,int> m;
-        for(auto ch:magazine){
-            m[ch]++;
-        }
-        for(auto ch:ransomNote){
-            if(m[ch])
-                m[ch]--;
-            else
-                return false;
-        }
-        return true;
+        sort(ransomNote.begin(), ransomNote.end());
+        sort(magazine.begin(), magazine.end());
+        return includes(magazine.begin(), magazine.end(), ransomNote.begin(), ransomNote.end());
     }
 };
