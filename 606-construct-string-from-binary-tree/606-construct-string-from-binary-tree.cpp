@@ -12,23 +12,25 @@
 class Solution {
 public:
     string tree2str(TreeNode* root) {
-        return helper(root);
+        string ans = "";
+        helper(root,ans);
+        return ans;
     }
-    string helper(TreeNode* root){
+    void helper(TreeNode* root,string &ans){
         if(!root)
-            return "";
-        string ans = to_string(root->val);
+            return;
+        ans+=to_string(root->val);
         if(root->left){
-            ans+='(';
-            ans+=helper(root->left);
-            ans+=')';
-        }else if(!root->left && root->right)
-            ans+="()";
+            ans += '('; 
+            helper(root->left,ans);
+            ans+= ')';
+        }
         if(root->right){
+            if(!root->left)
+                ans+="()";
             ans+='(';
-            ans+=helper(root->right);
+            helper(root->right,ans);
             ans+=')';
         }
-        return ans;
     }
 };
