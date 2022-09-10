@@ -5,14 +5,14 @@ public:
         helper(0,0,n,"");
         return ans;
     }
-    void helper(int open,int close,int n,string current)
-    {
-        if(current.length()==n*2)
-        {
-            ans.push_back(current);
+    void helper(int open,int closed,int n,string curr){
+        if(open==closed && open==n){
+            ans.push_back(curr);
             return;
         }
-        if(open<n)  helper(open+1,close,n,current+"(");
-        if(close<open)  helper(open,close+1,n,current+")");
+        if(open<n)
+            helper(open+1,closed,n,curr+"(");
+        if(closed<open)
+            helper(open,closed+1,n,curr+")");
     }
 };
