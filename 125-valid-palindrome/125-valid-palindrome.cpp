@@ -1,20 +1,11 @@
 class Solution {
 public:
     bool isPalindrome(string s) {
-        string a="";
-        for(char &ch:s){
-            if('A'<=ch&&ch<='Z'){
-                a+=tolower(ch);
-            }
-            else if('a'<=ch && ch<='z'){
-                a+=ch;
-            }
-            else if('0'<=ch && ch<='9'){
-                a+=ch;
-            }
-        }cout<<a;
-        s = a;
-        reverse(a.begin(),a.end());
-        return a==s;
+        for (int i = 0, j = s.size() - 1; i < j; i++, j--) {
+            while (!isalnum(s[i]) && i < j) i++;
+            while (!isalnum(s[j]) && i < j) j--;
+            if (tolower(s[i]) != tolower(s[j])) return false;
+        }
+        return true;
     }
 };
