@@ -25,13 +25,13 @@ public:
                 delete root;
                 return NULL;
             }
-            else if(root->left && !root->right){
+            else if(!root->right){
                 TreeNode* temp = root->left;
                 root->left = NULL;
                 delete root;
                 return temp;
             }
-            else if(root->right && !root->left){
+            else if(!root->left){
                 TreeNode* temp = root->right;
                 root->right = NULL;
                 delete root;
