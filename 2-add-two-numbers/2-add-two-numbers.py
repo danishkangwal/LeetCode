@@ -14,9 +14,9 @@ class Solution:
             if l2:
                 carry += l2.val
                 l2 = l2.next;
-            # carry, val = divmod(carry, 10)
             val = carry%10
             carry = carry//10
-            n.next = n = ListNode(val)
+            n.next = ListNode(val)
+            n=n.next
         return res.next
         
