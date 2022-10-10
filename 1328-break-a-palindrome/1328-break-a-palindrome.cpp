@@ -4,18 +4,14 @@ public:
         if(s.size()==1)
             return "";
         int i=0;
-        while(i<s.size() && s[i]=='a'){
+        while(i < s.size()/2){
+            if(s[i]!='a'){
+                s[i] = 'a';
+                return s;
+            }
             i++;
         }
-        if(i==s.size()){
-            s[s.size()-1]='b';
-            return s;
-        }
-        else if(i==s.size()/2){
-            s[s.size()-1]='b';
-            return s;
-        }
-        s[i] = 'a';
+        s[s.size()-1] = 'b';
         return s;
     }
 };
