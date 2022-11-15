@@ -12,10 +12,16 @@
 class Solution {
 public:
     int countNodes(TreeNode* root) {
+        int ans = 0;
+        helper(root,ans);
+        return ans;
+    }
+private:
+    void helper(TreeNode* root, int &ans){
         if(root == NULL)
-            return 0;
-        int leftNodes = countNodes(root->left);
-        int rightNodes = countNodes(root->right);
-        return leftNodes+rightNodes+1;
+            return;
+        ans++;
+        helper(root->left,ans);
+        helper(root->right,ans);
     }
 };
