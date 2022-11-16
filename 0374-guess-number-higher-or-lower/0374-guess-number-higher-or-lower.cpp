@@ -10,6 +10,8 @@
 class Solution {
 public:
     int guessNumber(int n) {
+        if(guess(n)==0)
+            return n;
         int low = 1,high = INT_MAX;
         while(low<=high){
             int mid = low + (high-low)/2;
