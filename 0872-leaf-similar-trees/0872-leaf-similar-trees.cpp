@@ -12,6 +12,11 @@
 class Solution {
 public:
     bool leafSimilar(TreeNode* root1, TreeNode* root2) {
+        if(!root1 && !root2)
+            return 1;
+        if(!root1 || !root2)
+            return 0;
+        
         vector<int> seq1;
         vector<int> seq2;
         helper(root1,seq1);        
@@ -28,9 +33,9 @@ private:
     void helper(TreeNode* root,vector<int>& a){
         if(!root)
             return;
-        helper(root->left,a);
         if(!root->left && !root->right)
             a.push_back(root->val);
+        helper(root->left,a);
         helper(root->right,a);
     }
 };
