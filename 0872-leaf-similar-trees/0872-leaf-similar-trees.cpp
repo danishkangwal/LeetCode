@@ -17,25 +17,18 @@ public:
         if(!root1 || !root2)
             return 0;
         
-        vector<int> seq1;
-        vector<int> seq2;
-        helper(root1,seq1);        
-        helper(root2,seq2);
-        if(seq1.size() != seq2.size())
-            return 0;
-        for(int i =0;i < seq1.size();i++){
-            if(seq1[i] != seq2[i])
-                return 0;
-        }
-        return 1;
+        string a,b;
+        helper(root1,a);        
+        helper(root2,b);
+        return a==b;
     }
 private:
-    void helper(TreeNode* root,vector<int>& a){
+    void helper(TreeNode* root,string &s){
         if(!root)
             return;
         if(!root->left && !root->right)
-            a.push_back(root->val);
-        helper(root->left,a);
-        helper(root->right,a);
+            s += to_string(root->val)+'#';
+        helper(root->left,s);
+        helper(root->right,s);
     }
 };
