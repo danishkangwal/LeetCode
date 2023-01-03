@@ -20,7 +20,6 @@ public:
                     prev = strs[i][x];
                 }
             }
-            cout << endl;
         }
         return count;
     }
