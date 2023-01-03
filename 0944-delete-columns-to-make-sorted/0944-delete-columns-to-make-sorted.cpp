@@ -1,23 +1,14 @@
 class Solution {
 public:
     int minDeletionSize(vector<string>& strs) {
-        int n = strs.size();
-        if(n == 1)
-            return 0;
+        int n = strs[0].size();
+
         int count = 0;
-        for(int x = 0;x < strs[0].size();x++){
-            char prev = ',';
-            for(int i = 0;i < n;i++){
-                if(prev == ','){
-                    prev = strs[i][x];
-                }
-                else{
-                    int tmp = strs[i][x] - prev;
-                    if(tmp < 0){
-                        count++;
-                        break;
-                    }
-                    prev = strs[i][x];
+        for(int col = 0;col < n;col++){
+            for(int row = 1;row < strs.size();row++){
+                if(strs[row][col] < strs[row-1][col]){
+                    count++;
+                    break;
                 }
             }
         }
