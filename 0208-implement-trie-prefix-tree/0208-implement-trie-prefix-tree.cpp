@@ -1,63 +1,53 @@
-class TrieNode{
-public:
-	char data;
-	TrieNode** children;
-	bool isTerminal;
-	
-	TrieNode(char data){
-		this->data = data;
-		children = new TrieNode*[26];
-		for (int i = 0; i < 26; ++i)
-		{
-			children[i] = NULL;
-		}
-		isTerminal = false;
-	}
-};
-
 class Trie {
+private:
+    Trie* child[26];
+    bool isTerminal;
 public:
-    TrieNode* root;
     Trie() {
-        root = new TrieNode('\0');
-    }
-    
-    void insert(TrieNode* root,string word){
-        if(!word.size()){
-            root->isTerminal = true;
-            return;
+        isTerminal = false;
+        for(int i = 0;i < 26;i++){
+            child[i] = NULL;
         }
-        int index = word[0]-'a';
-        TrieNode* child = root->children[index];
-        if(child==NULL){
-            child = new TrieNode(word[0]);
-            root->children[index] = child;
-        }
-        insert(child,word.substr(1));
     }
     
     void insert(string word) {
-        insert(root,word);
-    }
-    
-    bool search(TrieNode* root,string word,bool terminalCheck){
-        if(word.size()==0){
-            return ((terminalCheck)?root->isTerminal:1);
+        Trie* temp = this;
+        for(auto&i:word){
+            int index = i-'a';
+            Trie* child = temp->child[index];
+            if(child == NULL){
+                child = new Trie();
+                temp->child[index]=child;
+            }
+            temp = child;
         }
-        int index = word[0]-'a';
-        TrieNode* child = root->children[index];
-        if(child == NULL){
-            return 0;
-        }
-        return search(child,word.substr(1),terminalCheck);
+        temp->isTerminal = true;
     }
     
     bool search(string word) {
-        return search(root,word,1);
+        Trie* temp = this;
+        for(auto&i:word){
+            int index = i-'a';
+            Trie* child = temp->child[index];
+            if(child == NULL){
+                return 0;
+            }
+            temp = child;
+        }
+        return temp->isTerminal;
     }
     
     bool startsWith(string prefix) {
-        return search(root,prefix,0);
+        Trie* temp = this;
+        for(auto&i:prefix){
+            int index = i-'a';
+            Trie*child = temp->child[index];
+            if(child==NULL){
+                return 0;
+            }
+            temp = child;
+        }
+        return 1;
     }
 };
 
