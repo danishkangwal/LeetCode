@@ -1,29 +1,20 @@
 class Solution {
 public:
-    int n;
-    int a[101];
-    int dp[101];
     int rob(vector<int>& nums) {
-        memset(dp,-1,sizeof(dp));
-        n = nums.size();
-        for(int i=0;i < n;i++)
-            a[i] = nums[i];
-        return rec(0);
-    }
-private:
-    int rec(int level){
-        if(level >= n)
-            return 0;
-        if(dp[level]!=-1){
-            return dp[level];
+        if(nums.size()==1){
+            return nums[0];
         }
-        int ans = 0;
-        ans = a[level] + rec(level+2);
-        if(level!=n-1){
-            int tmp = a[level+1]+rec(level+3);
-            if(tmp > ans)
-                ans = tmp;
+        if(nums.size()==2){
+            return max(nums[0],nums[1]);
         }
-        return dp[level] =  ans;
+        int n = nums.size();
+        vector<int> dp(n);
+        
+        dp[n-1] = nums[n-1];
+        dp[n-2] = max(nums[n-1],nums[n-2]);
+        for(int i = n-3;i>=0;i--){
+            dp[i] = max(nums[i]+dp[i+2],dp[i+1]);
+        }
+        return dp[0];
     }
 };
