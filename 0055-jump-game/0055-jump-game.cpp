@@ -1,28 +1,19 @@
 class Solution {
 public:
-    bool canJump(vector<int>& nums) {
-        vector<int> memo(nums.size(),-1);
-        return helper(nums,0,memo);
-    }
-private:
-    bool helper(vector<int>& a,int level,vector<int>& memo){
+    bool canJump(vector<int>& a) {
         int n = a.size();
-        if(level == n-1){
-            return true;
-        }
-        if(level >= n){
-            return false;
-        }
-        if(memo[level]!=-1)
-            return memo[level];
+        vector<int> dp(n);
+        dp[n-1]=1;
 
-        bool ans = false;
-        for(int i = 1;i <= a[level];i++){
-            if(helper(a,level+i,memo)){
-                ans = true;
-                break;
+        for(int i = n-2;i>=0;i--){
+            for(int j = 1;j <= a[i];j++){
+                if(dp[i+j]){
+                    dp[i] = 1;
+                    break;
+                }
             }
+
         }
-        return memo[level]=ans;
+        return dp[0];
     }
 };
