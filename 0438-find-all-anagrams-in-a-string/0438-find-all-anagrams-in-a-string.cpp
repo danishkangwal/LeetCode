@@ -4,8 +4,8 @@ public:
         if(s.size() < p.size())
             return {};
         
-        int sMap[26] = {0};
-        int pMap[26] = {0};
+        vector<int> sMap(26,0);
+        vector<int> pMap(26,0);
         
         for(int i = 0;i < p.size();i++){
             sMap[s[i]-'a']++;
