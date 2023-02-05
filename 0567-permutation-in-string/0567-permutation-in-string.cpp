@@ -1,37 +1,41 @@
 class Solution {
 public:
     bool checkInclusion(string s1, string s2) {
-        if(s2.size()<s1.size())
+        if(s2.size() < s1.size())
             return false;
-        vector<int> freq(26,0);
+        int s1Map[26] = {0};
+        int s2Map[26] = {0};
+        
         for(int i = 0;i < s1.size();i++){
-            freq[s1[i]-'a']++;
+            s1Map[s1[i]-'a']++;
+            s2Map[s2[i]-'a']++;
         }
         
-        vector<int> curr(26,0);
-        for(int i = 0;i < s1.size();i++){
-            curr[s2[i]-'a']++;
-        }
-    
-        int right = s1.size();
-        for(int i = 1;right < s2.size();i++){
-            bool tmp = true;
-            for(int i = 0;i < 26;i++){
-                if(freq[i]!=curr[i]){
-                    tmp = false;
-                    break;
-                }
-            }
-            if(tmp==true)
-                return true;
-            curr[s2[i-1]-'a']--;
-            curr[s2[right]-'a']++;
-            right++;
-        }
+        int count = 0;
         for(int i = 0;i < 26;i++){
-            if(freq[i]!=curr[i])
-                return false;
+            if(s1Map[i]==s2Map[i])
+                count++;
         }
-        return true;
+        
+        for(int i = 0;i < s2.size()-s1.size();i++){
+            if(count == 26)
+                return true;
+            int l = s2[i]-'a';
+            int r = s2[i+s1.size()]-'a';
+            
+            s2Map[r]++;
+            if(s2Map[r]==s1Map[r])
+                count++;
+            else if(s2Map[r] == s1Map[r]+1)
+                count--;
+            
+            s2Map[l]--;
+            if(s2Map[l]==s1Map[l])
+                count++;
+            else if(s2Map[l]==s1Map[l]-1)
+                count--;
+            
+        }
+        return count==26;
     }
 };
