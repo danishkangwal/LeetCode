@@ -1,3 +1,6 @@
 class Solution:
     def separateDigits(self, nums: List[int]) -> List[int]:
-        return [int(c) for a in nums for c in str(a)]
+        ans = []
+        for x in nums:
+            ans.extend(map(int,str(x)))
+        return ans
