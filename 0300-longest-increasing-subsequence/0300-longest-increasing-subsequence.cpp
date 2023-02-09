@@ -1,20 +1,20 @@
 class Solution {
 public:
-    int dp[2501][2501];
-    int lengthOfLIS(vector<int>& nums) {
-        memset(dp,-1,sizeof(dp));
-        return helper(0,-1,nums);
-    }
-private:
-    int helper(int level,int last,vector<int>& nums){
-        if(level==nums.size())
-            return 0;
-        if(dp[level][last+1] != -1)
-            return dp[level][last+1];
-        int ans = helper(level+1,last,nums);
-        if(last==-1 || nums[level]>nums[last]){
-            ans = max(ans,1+helper(level+1,level,nums));
+    int lengthOfLIS(vector<int>& a) {
+        int n = a.size();
+        int ans = 1;
+        vector<int> dp(n,1);
+
+        for (int i = 0; i < n; ++i)
+        {
+            for(int prev = i-1; prev >= 0;prev--){
+                if(a[prev]<a[i]){
+                    dp[i] = max(dp[i],1+dp[prev]);
+                    ans = max(ans,dp[i]);
+                }
+            }
         }
-        return dp[level][last+1] = ans;
+
+        return ans;
     }
 };
