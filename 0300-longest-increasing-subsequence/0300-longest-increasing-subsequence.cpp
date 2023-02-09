@@ -1,20 +1,15 @@
 class Solution {
 public:
-    int lengthOfLIS(vector<int>& a) {
-        int n = a.size();
-        int ans = 1;
-        vector<int> dp(n,1);
-
-        for (int i = 0; i < n; ++i)
-        {
-            for(int prev = i-1; prev >= 0;prev--){
-                if(a[prev]<a[i]){
-                    dp[i] = max(dp[i],1+dp[prev]);
-                    ans = max(ans,dp[i]);
-                }
+    int lengthOfLIS(vector<int>& nums) {
+        vector<int> subArray;
+        for(const auto& num : nums){
+            if(subArray.size()==0 || subArray[subArray.size()-1]<num)
+                subArray.push_back(num);
+            else{
+                auto it = lower_bound(subArray.begin(),subArray.end(),num);
+                *it = num;
             }
         }
-
-        return ans;
+        return subArray.size();
     }
 };
