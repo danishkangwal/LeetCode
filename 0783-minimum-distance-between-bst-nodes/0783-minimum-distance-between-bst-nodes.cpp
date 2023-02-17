@@ -11,21 +11,20 @@
  */
 class Solution {
 public:
+    int minDistance = INT_MAX;
+    int prev = -1;
     int minDiffInBST(TreeNode* root) {
-        vector<int> inorder;
-        traversal(root,inorder);
-        int mini = INT_MAX;
-        for(int i = 1;i < inorder.size();i++)
-            mini = min(mini,abs(inorder[i]-inorder[i-1]));
-        for(auto i:inorder)
-            cout << i <<' ';
-        return mini;
+        traversal(root);
+        return minDistance;
     }
-    void traversal(TreeNode* root,vector<int>& inorder){
+private:
+    void traversal(TreeNode* root){
         if(!root)
             return;
-        traversal(root->left,inorder);
-        inorder.push_back(root->val);
-        traversal(root->right,inorder);
+        traversal(root->left);
+        if(prev != -1)
+            minDistance = min(minDistance,root->val - prev);
+        prev = root->val;
+        traversal(root->right);
     }
 };
