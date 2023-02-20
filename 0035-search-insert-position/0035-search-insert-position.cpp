@@ -8,10 +8,10 @@ public:
                 return mid;
             }
             else if(nums[mid]<target){
-                l++;
+                l = mid+1;
             }
             else{
-                r--;
+                r = mid-1;
             }
         }
         return l;
