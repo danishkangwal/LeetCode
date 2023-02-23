@@ -13,8 +13,8 @@ public:
                 visited[i][j] = 1;
                 if(wordSearch(board,word.substr(1),visited,i,j))
                     return 1;
-                visited.clear();
-                visited.resize(n,vector<bool>(m,0));
+                // visited.resize(n,vector<bool>(m,0));
+                visited[i][j]=0;
             }
         }
         return 0;
