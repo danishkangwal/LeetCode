@@ -14,21 +14,20 @@ public:
     bool isSymmetric(TreeNode* root) {
         if(!root)
             return 1;
-        stack<TreeNode*> lStack;
-        stack<TreeNode*> rStack;
-        lStack.push(root->left);
-        rStack.push(root->right);
-        while(lStack.size() and rStack.size()){
-            TreeNode* left = lStack.top();
-            TreeNode* right = rStack.top();
-            lStack.pop();rStack.pop();
-            if(!left and !right)
+        
+        stack<TreeNode*> st;
+        st.push(root->left);
+        st.push(root->right);
+        while(st.size()){
+            TreeNode* t1 = st.top();st.pop();
+            TreeNode* t2 = st.top();st.pop();
+            if(!t1 and !t2)
                 continue;
-            if(!left || !right || left->val!=right->val)
+            if(!t1 || !t2 || t1->val!=t2->val)
                 return 0;
-            lStack.push(left->right);lStack.push(left->left);
-            rStack.push(right->left);rStack.push(right->right);
+            st.push(t1->right);st.push(t2->left);
+            st.push(t1->left);st.push(t2->right);
         }
-        return lStack.empty() and rStack.empty();
+        return 1;
     }
 };
