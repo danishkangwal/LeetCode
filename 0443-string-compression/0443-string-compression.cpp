@@ -4,30 +4,24 @@ public:
         
         if(chars.size()==1)
             return 1;
-        string s = "";
-        for(auto&ch:chars)
-            s += ch;
-        
-        string res = "";
-        int i = 0,j = 0;
-        while(j < s.size()){
-            int cnt = 1;j++;
-            while(j < s.size() and s[j]==s[i]){
+        int res = 0;
+        int i = 0;
+        while(i < chars.size()){
+            int cnt = 1;
+            
+            while(i+cnt < chars.size() and chars[i+cnt]==chars[i]){
                 cnt++;
-                j++;
             }
-            if(cnt == 1){
-                res += s[i];
+            chars[res++] = chars[i];
+            
+            if(cnt>1){
+                for(auto c : to_string(cnt)){
+                    chars[res++] = c;
+                }
+                
             }
-            else{
-                res += s[i];
-                res += to_string(cnt);
-            }
-            i = j;
+            i += cnt;
         }
-        for(int i = 0;i < res.size();i++){
-            chars[i] = res[i];
-        }
-        return res.size();
+        return res;
     }
 };
