@@ -20,35 +20,31 @@
  * };
  */
 class Solution {
-public:
-    TreeNode* sortedListToBST(ListNode* head) {
-        if(head==NULL)
-            return NULL;
-        
-        ListNode* lt = findMid(head);
-        if(lt->next == NULL){
-            return new TreeNode(lt->val);
+private:
+    ListNode* head;
+    int len(ListNode* head){
+        int n = 0;
+        while(head){
+            n++;
+            head = head->next;
         }
-        ListNode* right = lt->next->next;
-        int data = lt->next->val;
-        lt->next = NULL;
-        
-        TreeNode* root = new TreeNode(data);
-        TreeNode* left = sortedListToBST(head); 
-        root->left = left;
-        root->right = sortedListToBST(right);
+        return n;
+    }
+    TreeNode* dfs(int l,int r){
+        if(l>r)
+            return NULL;
+        int mid = l + (r-l)/2;
+        TreeNode* leftTree = dfs(l,mid-1);
+        TreeNode* root = new TreeNode(head->val);
+        root->left = leftTree;
+        head = head->next;
+        root->right = dfs(mid+1,r);
         return root;
     }
-private:
-    ListNode* findMid(ListNode* head){
-        if(head==NULL)
-            return NULL;
-        ListNode *slow = head,*fast = head,*prev = head;
-        while(fast and fast->next){
-            prev = slow;
-            slow = slow->next;
-            fast = fast->next->next;
-        }
-        return prev;
+public:
+    TreeNode* sortedListToBST(ListNode* _head) {
+        int n = len(_head);
+        head = _head;
+        return dfs(0,n-1);
     }
 };
