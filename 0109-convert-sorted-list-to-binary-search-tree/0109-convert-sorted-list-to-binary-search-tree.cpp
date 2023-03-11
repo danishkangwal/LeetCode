@@ -22,29 +22,33 @@
 class Solution {
 public:
     TreeNode* sortedListToBST(ListNode* head) {
-        vector<int> inorder;
-        while(head!=NULL){
-            inorder.emplace_back(head->val);
-            head = head->next;
-        }
-        return constructBST(inorder);
-    }
-private:
-    using iter = vector<int>::const_iterator;
-    TreeNode* constructBSTHelper(iter left,iter right){
-        if(left>=right)
+        if(head==NULL)
             return NULL;
-        iter mid = left + (right-left)/2;
-        TreeNode* root = new TreeNode(*mid);
         
-        root->left = constructBSTHelper(left,mid);
-        root->right = constructBSTHelper(mid+1,right);
+        ListNode* lt = findMid(head);
+        if(lt->next == NULL){
+            return new TreeNode(lt->val);
+        }
+        ListNode* right = lt->next->next;
+        int data = lt->next->val;
+        lt->next = NULL;
         
+        TreeNode* root = new TreeNode(data);
+        TreeNode* left = sortedListToBST(head); 
+        root->left = left;
+        root->right = sortedListToBST(right);
         return root;
     }
-    TreeNode* constructBST(vector<int> &a){
-        if(a.size()==0)
+private:
+    ListNode* findMid(ListNode* head){
+        if(head==NULL)
             return NULL;
-        return constructBSTHelper(a.begin(),a.end());
+        ListNode *slow = head,*fast = head,*prev = head;
+        while(fast and fast->next){
+            prev = slow;
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        return prev;
     }
 };
