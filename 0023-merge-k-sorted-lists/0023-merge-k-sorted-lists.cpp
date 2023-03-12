@@ -12,17 +12,19 @@ class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
         priority_queue<int,vector<int>,greater<int>> pq;
-        for(auto&list:lists){
-            while(list){
-                pq.push(list->val);
-                list = list->next;
+        ListNode* temp;
+        for(auto& list:lists){
+            temp = list;
+            while(temp){
+                pq.push(temp->val);
+                temp = temp->next;
             }
         }
         ListNode* head = new ListNode();
-        ListNode* tail = head;
+        temp = head;
         while(pq.size()){
-            tail->next = new ListNode(pq.top());
-            tail = tail->next;
+            temp->next = new ListNode(pq.top());
+            temp = temp->next;
             pq.pop();
         }
         return head->next;
