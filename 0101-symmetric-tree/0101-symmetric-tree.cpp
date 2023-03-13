@@ -10,24 +10,21 @@
  * };
  */
 class Solution {
+private:
+    bool isSymmetric(TreeNode* left,TreeNode* right){
+        if(!left and !right)
+            return 1;
+        if(!left or !right)
+            return 0;
+        if(left->val!=right->val)
+            return 0;
+        return isSymmetric(left->left,right->right) and isSymmetric(left->right,right->left);
+    }
 public:
     bool isSymmetric(TreeNode* root) {
         if(!root)
-            return 1;
-        
-        stack<TreeNode*> st;
-        st.push(root->left);
-        st.push(root->right);
-        while(st.size()){
-            TreeNode* t1 = st.top();st.pop();
-            TreeNode* t2 = st.top();st.pop();
-            if(!t1 and !t2)
-                continue;
-            if(!t1 || !t2 || t1->val!=t2->val)
-                return 0;
-            st.push(t1->right);st.push(t2->left);
-            st.push(t1->left);st.push(t2->right);
-        }
-        return 1;
+            return true;
+
+        return isSymmetric(root->left,root->right);
     }
 };
