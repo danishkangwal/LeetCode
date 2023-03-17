@@ -1,46 +1,53 @@
-class Trie {
-private:
+class TrieNode{
+public:    
     bool isTerminal;
-    Trie* child[26];
+    TrieNode* child[26]; 
+
+    TrieNode(){
+        isTerminal = false;
+        for(int i = 0;i < 26;i++)
+            child[i] = NULL;
+    }
+};
+
+class Trie {
+    TrieNode* root;
 public:
     Trie() {
-        isTerminal = false;
-        for(int i = 0;i < 26;i++){
-            child[i] = NULL;
-        }
-    }
-    
-    void insert(Trie* curr,string word){
-        if(word.size()==0){
-            curr->isTerminal = true;
-            return;
-        }
-        int idx = word[0]-'a';
-        if(curr->child[idx]==NULL)
-            curr->child[idx] = new Trie();
-        insert(curr->child[idx],word.substr(1));
+        root = new TrieNode();
     }
     
     void insert(string word) {
-        insert(this,word);
-    }
-    
-    bool search(Trie* curr,string word,int check){
-        if(word.size()==0){
-            return check?curr->isTerminal:1;
+        TrieNode* temp = root;
+        for(auto& ch :word){
+            int idx = ch -'a';
+            if(temp->child[idx]==NULL)
+                temp->child[idx] = new TrieNode();
+            temp = temp->child[idx];
         }
-        int idx = word[0]-'a';
-        if(curr->child[idx]==NULL)
-            return 0;
-        return search(curr->child[idx],word.substr(1),check);
+        temp->isTerminal = true;
     }
     
     bool search(string word) {
-        return search(this,word,1);
+        TrieNode* temp = root;
+        for(auto& ch :word){
+            int idx = ch -'a';
+            if(temp->child[idx]==NULL)
+                return 0;
+            temp = temp->child[idx];
+        }
+        return temp->isTerminal;
     }
     
     bool startsWith(string prefix) {
-        return search(this,prefix,0);
+        TrieNode* temp = root;
+        for(auto& ch :prefix){
+            int idx = ch-'a';
+            if(temp->child[idx]==NULL)
+                return 0;
+            temp = temp->child[idx];
+        }
+        return 1;
     }
 };
 
