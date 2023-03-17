@@ -1,7 +1,7 @@
 class Trie {
 private:
-    Trie* child[26];
     bool isTerminal;
+    Trie* child[26];
 public:
     Trie() {
         isTerminal = false;
@@ -10,44 +10,37 @@ public:
         }
     }
     
-    void insert(string word) {
-        Trie* temp = this;
-        for(auto&i:word){
-            int index = i-'a';
-            Trie* child = temp->child[index];
-            if(child == NULL){
-                child = new Trie();
-                temp->child[index]=child;
-            }
-            temp = child;
+    void insert(Trie* curr,string word){
+        if(word.size()==0){
+            curr->isTerminal = true;
+            return;
         }
-        temp->isTerminal = true;
+        int idx = word[0]-'a';
+        if(curr->child[idx]==NULL)
+            curr->child[idx] = new Trie();
+        insert(curr->child[idx],word.substr(1));
+    }
+    
+    void insert(string word) {
+        insert(this,word);
+    }
+    
+    bool search(Trie* curr,string word,int check){
+        if(word.size()==0){
+            return check?curr->isTerminal:1;
+        }
+        int idx = word[0]-'a';
+        if(curr->child[idx]==NULL)
+            return 0;
+        return search(curr->child[idx],word.substr(1),check);
     }
     
     bool search(string word) {
-        Trie* temp = this;
-        for(auto&i:word){
-            int index = i-'a';
-            Trie* child = temp->child[index];
-            if(child == NULL){
-                return 0;
-            }
-            temp = child;
-        }
-        return temp->isTerminal;
+        return search(this,word,1);
     }
     
     bool startsWith(string prefix) {
-        Trie* temp = this;
-        for(auto&i:prefix){
-            int index = i-'a';
-            Trie*child = temp->child[index];
-            if(child==NULL){
-                return 0;
-            }
-            temp = child;
-        }
-        return 1;
+        return search(this,prefix,0);
     }
 };
 
