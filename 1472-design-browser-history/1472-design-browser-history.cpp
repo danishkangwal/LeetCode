@@ -1,34 +1,50 @@
+class DoublyNode {
+public:
+    string val;
+    DoublyNode* prev;
+    DoublyNode* next;
+
+    DoublyNode(string value) {
+        val = value;
+        prev = NULL;
+        next = NULL;
+    }
+};
+
 class BrowserHistory {
-    vector<string> tab;
-    int curr;
-    int size;
+    DoublyNode* head;
+    DoublyNode* curr;
 public:
     BrowserHistory(string homepage) {
-        tab.push_back(homepage);
-        curr = 0;
-        size = 1;
+        head = new DoublyNode(homepage);
+        curr = head;
     }
     
     void visit(string url) {
-        if(curr == size-1){
-            tab.push_back(url);
-        }
+        if(curr->next == NULL)
+            curr->next = new DoublyNode(url);
         else{
-            tab.erase(tab.begin()+curr+1,tab.end());
-            tab.push_back(url);
+            curr->next->val = url;
+            curr->next->next = NULL;
         }
-        curr++;
-        size = tab.size();
+        curr->next->prev = curr;
+        curr = curr->next;
     }
     
     string back(int steps) {
-        curr = max(0,curr-steps);
-        return tab[curr];
+        while(steps and curr->prev){
+            curr = curr->prev;
+            steps--;
+        }
+        return curr->val;
     }
     
     string forward(int steps) {
-        curr = min(size-1,curr+steps);
-        return tab[curr];
+        while(steps and curr->next){
+            curr = curr->next;
+            steps--;
+        }
+        return curr->val;
     }
 };
 
