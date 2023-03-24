@@ -1,4 +1,16 @@
 class Solution {
+    int ans;
+    void dfs(vector<vector<pair<int,int>>>& adj,int node,vector<bool>& vis){
+        vis[node] = 1;
+        for(auto&i :adj[node]){
+            if(!vis[i.first]){
+                if(i.second==1)
+                    ans++;
+                dfs(adj,i.first,vis);
+            }
+        }
+        
+    }
 public:
     int minReorder(int n, vector<vector<int>>& connections) {
         
@@ -8,24 +20,9 @@ public:
             adj[i[1]].push_back({i[0],0});
         }
         
-        int ans = 0;
+        ans = 0;
         vector<bool> vis(n,0);
-        queue<int> q;
-        q.push(0);
-        while(q.size()){
-            int curr = q.front();
-            q.pop();
-            cout << curr<<" ";
-            vis[curr] = 1;
-            for(auto&i: adj[curr]){
-                if(!vis[i.first]){
-                    vis[i.first] = 1;
-                    if(i.second==1)
-                        ans++;
-                    q.push(i.first);
-                }
-            }
-        }
+        dfs(adj,0,vis);
         
         return ans;
     }
