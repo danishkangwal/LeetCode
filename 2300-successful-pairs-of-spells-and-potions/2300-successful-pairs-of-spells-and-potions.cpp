@@ -1,17 +1,21 @@
 class Solution {
 public:
     vector<int> successfulPairs(vector<int>& spells, vector<int>& potions, long long success) {
-        sort(begin(potions),end(potions));
+        vector<pair<int,int>> sortedSpells;
+        int idx = 0;
+        for(auto i:spells){
+            sortedSpells.push_back({i,idx});
+            idx++;
+        }
+        sort(sortedSpells.begin(),sortedSpells.end());
+        sort(potions.begin(),potions.end());
+        vector<int> res(spells.size());
         int m = potions.size();
-        vector<int> res;
-        for(auto& i:spells){
-            long long minRequired = ceil((1.0*success)/i);
-            if(minRequired > potions[m-1]){
-                res.push_back(0);
-            }else{
-                int idx = lower_bound(potions.begin(),potions.end(),minRequired)-potions.begin();
-                res.push_back(m-idx);
-            }
+        int potionIdx = m-1;
+        for(const auto&[val,idx]:sortedSpells){
+            while(potionIdx>=0 and 1LL*val*potions[potionIdx]>=success)
+                potionIdx--;
+            res[idx] = m-(potionIdx+1);
         }
         return res;
     }
