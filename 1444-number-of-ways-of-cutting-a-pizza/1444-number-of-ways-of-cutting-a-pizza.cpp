@@ -1,51 +1,31 @@
 class Solution {
-    vector<vector<int>> table;
-    vector<vector<vector<int>>> memo;
-    const int md = 1e9+7;
-    int solve(int i,int j,int k,int m,int n){
-        if(table[i][j]<k)
-            return 0;
-        if(k==1){
-            return ((table[i][j]>=1)?1:0);
-        }
-        if(memo[i][j][k]!=-1)
-            return memo[i][j][k];
-
-        memo[i][j][k] = 0;
-        for(int h = i+1;h < m;h++){
-            if(table[i][j]-table[h][j]>0 and table[h][j]>=k-1){
-                memo[i][j][k] = (memo[i][j][k] + solve(h,j,k-1,m,n))%md; 
-
-            }
-        }
-        for(int v = j+1;v<n;v++){
-            if(table[i][j]-table[i][v]>0 and table[i][v]>=k-1){
-                memo[i][j][k] = (memo[i][j][k] + solve(i,v,k-1,m,n))%md;
-            }
-        }
-
-        return memo[i][j][k];
-    }
+    const int mod = 1e9+7;
 public:
-    int ways(vector<string>& pizza,int k){
+    int ways(vector<string>& pizza, int k) {
         int m = pizza.size(),n = pizza[0].size();
-        table.resize(m,vector<int>(n,0));
-        table[m-1][n-1] = (pizza[m-1][n-1]=='A'?1:0);
-        for(int i = m-2;i>=0;i--){
-            table[i][n-1] = table[i+1][n-1] + ((pizza[i][n-1]=='A')?1:0);
-        }
-        for(int i = n-2;i>=0;i--){
-            table[m-1][i] = table[m-1][i+1] + ((pizza[m-1][i]=='A')?1:0);
-        }
-        for(int i = m-2;i>=0;i--){
-            for(int j = n-2;j>=0;j--){
-                table[i][j] = table[i+1][j]+table[i][j+1]-table[i+1][j+1];
-                if(pizza[i][j]=='A')
-                    table[i][j]++;
+        vector dp(k,vector(m,vector<int>(n,0)));
+        vector apples(m+1,vector<int>(n+1));
+        for(int i = m-1;i>=0;i--){
+            for(int j = n-1;j>=0;j--){
+                apples[i][j] = (pizza[i][j]=='A')+apples[i+1][j]+apples[i][j+1] - apples[i+1][j+1];
+                dp[0][i][j] = apples[i][j]>0;
             }
         }
-        memo.resize(m,vector<vector<int>>(n,vector<int>(k+1,-1)));
-
-        return solve(0,0,k,m,n);
+        for(int _k = 1;_k<k;_k++){
+            for(int i = 0;i < m;i++){
+                for(int j = 0;j < n;j++){
+                    for(int row=i+1;row<m;row++){
+                        if(apples[i][j]-apples[row][j]>0)
+                            (dp[_k][i][j] += dp[_k-1][row][j])%=mod;
+                    }
+                    for(int col = j+1;col<n;col++){
+                        if(apples[i][j]-apples[i][col]>0)
+                            (dp[_k][i][j] += dp[_k-1][i][col])%=mod;
+                    }
+                }
+            }
+        }
+        
+        return dp[k-1][0][0];
     }
 };
