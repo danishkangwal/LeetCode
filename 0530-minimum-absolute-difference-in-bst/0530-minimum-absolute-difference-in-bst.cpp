@@ -10,22 +10,20 @@
  * };
  */
 class Solution {
-    void traversal(TreeNode* root,vector<int>& a){
+    int prev = -1;
+    int minDiff = INT_MAX;
+    void inorder(TreeNode* root){
         if(!root)
             return;
-        traversal(root->left,a);
-        a.push_back(root->val);
-        traversal(root->right,a);
+        inorder(root->left);
+        if(prev != -1)
+            minDiff = min(minDiff,abs(prev-root->val));
+        prev = root->val;
+        inorder(root->right);
     }
 public:
     int getMinimumDifference(TreeNode* root) {
-        vector<int> a;
-        traversal(root,a);
-        sort(a.begin(),a.end());
-        int mini = INT_MAX;
-        for(int i = 0;i < a.size()-1;i++){
-            mini = min(mini,abs(a[i]-a[i+1]));
-        }
-        return mini;
+        inorder(root);
+        return minDiff;
     }
 };
