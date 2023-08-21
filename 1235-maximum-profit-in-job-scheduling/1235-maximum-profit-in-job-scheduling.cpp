@@ -1,19 +1,24 @@
 class Solution {
 public:
     int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) {
-        vector<vector<int>> jobs;
-        int n = profit.size();
-        for (int i = 0; i < n; ++i) {
-            jobs.push_back({endTime[i], startTime[i], profit[i]});
+        map<int,int> times;
+        unordered_map<int,vector<pair<int,int>>> jobs;
+        
+        for(int i = 0;i < startTime.size();i++){
+            jobs[startTime[i]].push_back({endTime[i],profit[i]});
+            times[startTime[i]] = 0;
         }
         
-        sort(jobs.begin(), jobs.end());
-        map<int, int> dp = {{0, 0}};
-        for (auto& job : jobs) {
-            int cur = prev(dp.upper_bound(job[1]))->second + job[2];
-            if (cur > dp.rbegin()->second)
-                dp[job[0]] = cur;
+        int maxProfit = 0;
+        
+        for(auto it = times.rbegin();it!=times.rend();it++){
+            for(auto job: jobs[it->first]){
+                auto itr = times.lower_bound(job.first);
+                maxProfit = max(maxProfit,(itr==times.end()?0:itr->second)+job.second);
+            }
+            it->second = maxProfit;
         }
-        return dp.rbegin()->second;
+        
+        return maxProfit;
     }
 };
